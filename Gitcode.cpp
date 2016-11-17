@@ -10,46 +10,44 @@
 
 
 Commit Gitcode::getCommit(std::string &commi) {
-    IteradorL<Commit> ite = commits.iteradorInicio();
-    while (ite != commits.iteradorFin()) {
-        Commit tm = ite.dato();
+    std::list<Commit>::iterator ite = commits.begin();
+    while (ite != commits.end()) {
+        Commit tm = *ite;
         if (tm.getCodigo() == commi) {
-            return ite.dato();
+            return *ite;
         }
-        ite.siguiente();
+        ++ite;
 
     }
 
 }
 
-vDinamico<Commit*> Gitcode::getCommitFechas(const Fecha &inicio, const Fecha &fin) {
-    vDinamico<Commit*> tempo;
-    IteradorL<Commit> ite = commits.iteradorInicio();
-    while (ite != commits.iteradorFin()) {
-        if (ite.dato().getMarcaDeTiempo() < fin && ite.dato().getMarcaDeTiempo() > inicio) {
-            Commit* t = &ite.dato();
-            tempo.aumenta(t);
+vector<Commit*> Gitcode::getCommitFechas(const Fecha &inicio, const Fecha &fin) {
+    vector<Commit*> tempo;
+    std::list<Commit>::iterator ite = commits.begin();
+    while (ite != commits.end()) {
+        if (ite->getMarcaDeTiempo() < fin && ite->getMarcaDeTiempo() > inicio) {
+            tempo.push_back(&*ite);
         }
-        ite.siguiente();
+        ++ite;
     }
 
     return tempo;
 }
 
-vDinamico<Commit*> Gitcode::getCommitFichero(std::string fichero) {
-    vDinamico<Commit*> temporal;
-    IteradorL<Commit> tempo = commits.iteradorInicio();
-    while (tempo != commits.iteradorFin()) {
-        Fichero *t = tempo.dato().buscaFichero(fichero);
+/*vector<Commit*> Gitcode::getCommitFichero(std::string fichero) {
+    vector<Commit*> temporal;
+    std::list<Commit>::iterator tempo = commits.begin();
+    while (tempo != commits.end()) {
+        Fichero *t = ;
         if (t->getTamaBytes() != 0) {
-            Commit *d = &tempo.dato();
-            temporal.aumenta(d);
+            temporal.push_back(&*tempo);
         }
-        tempo.siguiente();
+        ++tempo;
     }
 
     return temporal;
-}
+}*/
 
 Gitcode::Gitcode(const std::string &fich, const std::string &commi) {
     std::string lineaActual;
@@ -73,7 +71,7 @@ Gitcode::Gitcode(const std::string &fich, const std::string &commi) {
             auto nombre = ruta.substr(pos + 1, ruta.length());
             auto tamaBytes = std::stoi(tama);
             f =new Fichero(nombre, ubicacion, tamaBytes);
-            ficheros.aumenta(f);
+            ficheros.push_back(f);
 
 
 
@@ -121,10 +119,14 @@ Gitcode::Gitcode(const std::string &fich, const std::string &commi) {
                 inserta.anadeFichero(ficheros[ref]);
                 indice = indice.substr(0, pos);
             }
-            IteradorL<Commit> in=commits.iteradorFin();
-            commits.insertar(in,inserta);
-            refCommit inserta2=refCommit(inserta.getCodigo(),commits.iteradorFin());
-            ABBbuscar.insertar(inserta2);
+
+            commits.push_back(inserta);
+            std::list<Commit>::iterator it=commits.end();
+            --it;
+            std::pair<std::string,std::list<Commit>::iterator> ins;
+            ins.first=inserta.getCodigo();
+            ins.second=it;
+            ABBbuscar.emplace(ins);
 
 
 
@@ -137,35 +139,35 @@ Gitcode::Gitcode(const std::string &fich, const std::string &commi) {
 }
 
 void Gitcode::eliminaFichero(std::string &fichero) {
-    IteradorL<Commit> miIt = commits.iteradorInicio();
-    while (miIt != commits.iteradorFin()) {
-        miIt.dato().borraFichero(fichero);
-        miIt.siguiente();
+    std::list<Commit>::iterator miIt = commits.begin();
+    while (miIt != commits.end()) {
+        miIt->borraFichero(fichero);
+        ++miIt;
     }
 }
 
 
-void Gitcode::nuevoCommit(Commit &orig) {
-    refCommit b=refCommit(orig.getCodigo(),commits.iteradorInicio());
+/*void Gitcode::nuevoCommit(Commit &orig) {
+
     if(!ABBbuscar.buscar(b)){
         commits.insertar(b.itc,orig);
         ABBbuscar.insertar(b);
     }
 
-}
+}*/
 
-bool Gitcode::borraCommit(const std::string &codigo) {
+/*bool Gitcode::borraCommit(const std::string &codigo) {
     refCommit b=refCommit(codigo,commits.iteradorInicio());
     if(ABBbuscar.buscar(b)){
     }
 
-}
+}*/
 
-std::string Gitcode::getStatus() {
+/*std::string Gitcode::getStatus() {
     std::string mistr;
-    mistr+= (char)ABBbuscar.altura();
-    mistr+= (char)ABBbuscar.numElementos();
-    mistr+= (char)ABBbuscar.numHojas();
+    mistr+= (char)ABBbuscar.;
+    mistr+= (char)ABBbuscar.size();
+    mistr+= (char)ABBbuscar.;
     return mistr;
-}
+}*/
 

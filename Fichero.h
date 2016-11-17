@@ -51,6 +51,10 @@ public:
         return (*this!=orig);
     }
 
+    bool operator <(const Fichero &orig){
+        return *this<orig;
+    }
+
 private:
     std::string nombre;
     std::string ubicacion;
