@@ -43,16 +43,16 @@ public:
         tamaBytes = 0;
     }
 
-    bool operator==(const Fichero &orig) const{
+    bool operator==(const Fichero &orig) const {
         return (*this == orig);
     }
 
-    bool operator !=(const Fichero & orig)const{
-        return (*this!=orig);
+    bool operator!=(const Fichero &orig) const {
+        return (*this != orig);
     }
 
-    bool operator <(const Fichero &orig) const{
-        return *this<orig;
+    bool operator<(const Fichero &orig) const {
+        return *this < orig;
     }
 
 private:
