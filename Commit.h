@@ -16,7 +16,7 @@ private:
     std::string codigo;
     Fecha marcaDeTiempo;
     std::string mensaje;
-    vector<Fichero*> MisFicheros;
+    std::vector<Fichero*> MisFicheros;
 public:
     Commit() {
         codigo = "";
@@ -40,7 +40,7 @@ public:
         return mensaje;
     }
 
-    void anadeFichero(Fichero * &fichero) {
+    void anadeFichero(Fichero * fichero) {
         MisFicheros.push_back(fichero);
     }
 
