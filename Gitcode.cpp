@@ -65,11 +65,12 @@ Gitcode::Gitcode(const std::string &fich, const std::string &commi) {
             pos = substr1.find_last_of(';');
             auto marcaTiempo = substr1.substr(pos + 1, substr1.size());
             Fecha fch = Fecha(1, 1, 1, 1, 1);
-            fch.anadirMin(std::stoi(marcaTiempo.substr(10, 11)) - 1);
-            fch.anadirHoras(std::stoi(marcaTiempo.substr(8, 10)) - 1);
-            fch.anadirDias(std::stoi(marcaTiempo.substr(6, 8)) - 1);
-            fch.anadirMeses(std::stoi(marcaTiempo.substr(4, 6)) - 1);
+            fch.anadirMin(std::stoi(marcaTiempo.substr(10, 2)) - 1);
+            fch.anadirHoras(std::stoi(marcaTiempo.substr(8, 2)) - 1);
+            fch.anadirDias(std::stoi(marcaTiempo.substr(6, 2)) - 1);
+            fch.anadirMeses(std::stoi(marcaTiempo.substr(4, 2)) - 1);
             fch.anadirAnios(std::stoi(marcaTiempo.substr(0, 4)) - 1);
+
 
             auto codigo = substr1.substr(0, pos);
             Commit *inserta = new Commit(codigo, fch, mensaje);
